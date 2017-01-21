@@ -3,6 +3,7 @@ package plain
 import (
 	"fmt"
 	"github.com/stoogebot/pluginframework"
+	"github.com/tucnak/telebot"
 )
 
 type PlainPlugin struct{}
@@ -22,4 +23,8 @@ func (p *PlainPlugin) OnStop() {
 
 func (p *PlainPlugin) GetId() string {
 	return "plainplugin"
+}
+
+func (p *PlainPlugin) Run(message telebot.Message) {
+	fmt.Println("Message recieved")
 }

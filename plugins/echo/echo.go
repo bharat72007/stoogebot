@@ -1,4 +1,4 @@
-package free
+package echo
 
 import (
 	"fmt"
@@ -7,27 +7,26 @@ import (
 	"strings"
 )
 
-type FreePlugin struct{ name string }
+type EchoPlugin struct{}
 
 func init() {
-	//Register Plugin
-	fmt.Printf("Registering Free \n")
-	pluginframework.Register(&FreePlugin{name: "Free"})
+	fmt.Printf("Registering Echo Plugin \n")
+	pluginframework.Register(&EchoPlugin{})
 }
 
-func (p *FreePlugin) Onstart() {
-	fmt.Printf("Starting Plugin %s \n", p.name)
+func (p *EchoPlugin) Onstart() {
+	fmt.Printf("Starting Plugin %s \n", p.GetId())
 }
 
-func (p *FreePlugin) OnStop() {
+func (p *EchoPlugin) OnStop() {
 	fmt.Printf("Stoping Plugin \n")
 }
 
-func (p *FreePlugin) GetId() string {
-	return "freeplugin"
+func (p *EchoPlugin) GetId() string {
+	return "echoplugin"
 }
 
-func (p *FreePlugin) Run(message telebot.Message) {
+func (p *EchoPlugin) Run(message telebot.Message) {
 	fmt.Printf("Message recieved for Echo %s \n", message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "echo") {
