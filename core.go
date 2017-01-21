@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Strating Plugins")
+	fmt.Println("Starting Plugins")
 	for _, plugin := range pluginframework.RegisteredPlugins {
 		go plugin.Onstart()
 	}
