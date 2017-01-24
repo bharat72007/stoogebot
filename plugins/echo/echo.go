@@ -14,7 +14,7 @@ func init() {
 	pluginframework.Register(&EchoPlugin{})
 }
 
-func (p *EchoPlugin) Onstart() {
+func (p *EchoPlugin) OnStart() {
 	fmt.Printf("Starting Plugin %s \n", p.GetId())
 }
 
@@ -27,11 +27,8 @@ func (p *EchoPlugin) GetId() string {
 }
 
 func (p *EchoPlugin) Run(message telebot.Message) {
-	fmt.Printf("Message recieved for Echo %s \n", message.Text)
 	bot := pluginframework.Bot
-	if strings.HasPrefix(message.Text, "echo") {
-		fmt.Println("Inside Echo")
-		bot.SendMessage(message.Chat,
-			message.Text, nil)
+	if strings.HasPrefix(message.Text, "/echo") {
+		bot.SendMessage(message.Chat, strings.TrimPrefix(message.Text, "/echo"), nil)
 	}
 }

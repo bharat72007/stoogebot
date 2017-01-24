@@ -6,7 +6,7 @@ import (
 )
 
 type BotPlugin interface {
-	Onstart()
+	OnStart()
 	OnStop()
 	GetId() string
 	Run(telebot.Message)
