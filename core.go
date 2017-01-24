@@ -5,6 +5,7 @@ import (
 	"github.com/stoogebot/pluginframework"
 	_ "github.com/stoogebot/plugins/chucknorris"
 	_ "github.com/stoogebot/plugins/echo"
+	_ "github.com/stoogebot/plugins/xkcd"
 	"github.com/tucnak/telebot"
 	"os"
 	"time"
