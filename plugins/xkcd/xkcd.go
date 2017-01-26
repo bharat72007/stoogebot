@@ -67,7 +67,7 @@ func (p *XkcdPlugin) Run(message telebot.Message) {
 			fmt.Println(xkcdImgUrl)
 			//bot.SendMessage(message.Chat, xkcdImgUrl, nil)
 			pluginframework.SendPhoto(xkcdImgUrl, message, bot)
-			pluginframework.SendVideo("https://github.com/eternnoir/gotelebot/blob/master/test_data/test_video.mp4", message, bot)
+			pluginframework.SendVideo("https://www.youtube.com/watch?v=f6kdp27TYZs", message, bot)
 			pluginframework.SendAudio("https://github.com/eternnoir/gotelebot/blob/master/test_data/record.mp3", message, bot)
 			pluginframework.SendSticker("https://github.com/eternnoir/gotelebot/blob/master/test_data/go.webp", message, bot)
 
