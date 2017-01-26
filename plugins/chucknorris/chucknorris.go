@@ -41,7 +41,7 @@ func (p *ChuckNorrisPlugin) GetId() string {
 }
 
 func (p *ChuckNorrisPlugin) Run(message telebot.Message) {
-	fmt.Printf("Message recieved for Echo %s \n", message.Text)
+	fmt.Printf("Chuck Knows what message you are going to send %s \n", message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/chucknorris") {
 		rest := gorest.New()

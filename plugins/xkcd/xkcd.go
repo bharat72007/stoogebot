@@ -47,20 +47,30 @@ func (p *XkcdPlugin) GetId() string {
 }
 
 func (p *XkcdPlugin) Run(message telebot.Message) {
+	fmt.Println("Message xkcd" + message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/xkcd") {
 		rest := gorest.New()
 		//Trim all spaces, after trimming "/xkcd" from message test.
 		//Example /xkcd 22 ==> 22
 		number := strings.Replace(strings.Replace(message.Text, "/xkcd", "", -1), " ", "", -1)
-
+		fmt.Println(number)
 		request, _ := rest.Base(baseapi).Path(number).Path("info.0.json").Get().Request()
+		fmt.Println(request)
 		response, _ := rest.Send(request)
+		fmt.Println(response)
 		if response.StatusCode == 200 {
 			var xkcd Xkcd
 			gorest.Response(response, &xkcd, nil)
-			xkcdResponse := xkcd.Img
-			bot.SendMessage(message.Chat, xkcdResponse, nil)
+			//Xkcd Image URL.
+			xkcdImgUrl := xkcd.Img
+			fmt.Println(xkcdImgUrl)
+			//bot.SendMessage(message.Chat, xkcdImgUrl, nil)
+			pluginframework.SendPhoto(xkcdImgUrl, message, bot)
+			pluginframework.SendVideo("https://github.com/eternnoir/gotelebot/blob/master/test_data/test_video.mp4", message, bot)
+			pluginframework.SendAudio("https://github.com/eternnoir/gotelebot/blob/master/test_data/record.mp3", message, bot)
+			pluginframework.SendSticker("https://github.com/eternnoir/gotelebot/blob/master/test_data/go.webp", message, bot)
+
 		} else {
 			bot.SendMessage(message.Chat, "Some problem with Xkcd", nil)
 		}
