@@ -23,11 +23,9 @@ func init() {
 }
 
 func (p *HelpPlugin) OnStart() {
-	fmt.Printf("Starting HelpPlugin %s \n", p.name)
 }
 
 func (p *HelpPlugin) OnStop() {
-	fmt.Printf("Stoping Plugin \n")
 }
 
 func (p *HelpPlugin) PluginId() string {
@@ -44,7 +42,7 @@ func (p *HelpPlugin) Description() string {
 
 func (p *HelpPlugin) Run(message telebot.Message) {
 	bot := pluginframework.Bot
-	if strings.HasPrefix(message.Text, "/help") {
+	if strings.HasPrefix(message.Text, p.Command()) {
 		var helpstring string
 		var plugins map[string]pluginframework.BotPlugin
 		plugins = pluginframework.RegisteredPlugins
