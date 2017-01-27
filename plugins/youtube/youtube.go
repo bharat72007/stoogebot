@@ -12,6 +12,7 @@ import (
 const (
 	baseapi  = "https://www.googleapis.com"
 	watchurl = "https://youtube.com/watch?v="
+	ApiKey   = os.Getenv("YOUTUBE_KEY")
 )
 
 type YoutubeResponse struct {
@@ -74,7 +75,7 @@ func init() {
 		name:        "Youtube Plugin",
 		command:     "/youtube",
 		id:          "[youtube]",
-		description: "Search Youtube Video using Bot. Example /youtube Football ==> Gives you Football Video",
+		description: "Search Youtube Video using Bot. Example /youtube Football, Gives you Football Video",
 	})
 }
 
@@ -87,6 +88,7 @@ func (p *YoutubePlugin) Description() string {
 }
 
 func (p *YoutubePlugin) OnStart() {
+
 }
 
 func (p *YoutubePlugin) OnStop() {
@@ -97,9 +99,11 @@ func (p *YoutubePlugin) PluginId() string {
 }
 
 func (p *YoutubePlugin) Run(message telebot.Message) {
-	ApiKey := os.Getenv("YOUTUBE_KEY")
 	bot := pluginframework.Bot
-	if strings.HasPrefix(message.Text, "/youtube") {
+	//Check whether Key is Set OR Not
+	if ApiKey == nil || ApiKey == "" {
+		bot.SendMessage(message.Chat, "Error: Third Party Integeration not Set.Try After sometime", options)
+	} else if strings.HasPrefix(message.Text, p.Command()) {
 		searchKeyword := strings.Replace(strings.Replace(message.Text, "/youtube", "", -1), " ", "", -1)
 		rest := gorest.New()
 		query := map[string]string{"part": "snippet",
@@ -109,7 +113,7 @@ func (p *YoutubePlugin) Run(message telebot.Message) {
 		}
 		request, _ := rest.Base(baseapi).Path("youtube").Path("v3").Path("search").Query(query).Get().Request()
 		response, _ := rest.Send(request)
-		if response.StatusCode == 200 {
+		if response != nil; response.StatusCode == 200 {
 			var youtubeResponse YoutubeResponse
 			err := gorest.Response(response, &youtubeResponse, nil)
 			if err != nil {

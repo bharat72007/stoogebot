@@ -19,7 +19,7 @@ func init() {
 		name:        "Echo Plugin",
 		command:     "/echo",
 		id:          "[echo]",
-		description: "Echo back the text. Example /echo texting to you ==> Display texting to you",
+		description: "Echo back the text. Example /echo 'texting to you'",
 	})
 }
 
@@ -43,7 +43,7 @@ func (p *EchoPlugin) PluginId() string {
 
 func (p *EchoPlugin) Run(message telebot.Message) {
 	bot := pluginframework.Bot
-	if strings.HasPrefix(message.Text, "/echo") {
-		bot.SendMessage(message.Chat, strings.TrimPrefix(message.Text, "/echo"), nil)
+	if strings.HasPrefix(message.Text, p.Command()) {
+		bot.SendMessage(message.Chat, strings.TrimPrefix(message.Text, p.Command()), nil)
 	}
 }

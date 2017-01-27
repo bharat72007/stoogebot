@@ -32,7 +32,7 @@ func init() {
 		name:        "Chuck Norris Plugin",
 		command:     "/chucknorris",
 		id:          "[chucknorris]",
-		description: "Get random Chuck Norris Jokes. Example /chucknorris ==> gives random chuck norris joke of the day",
+		description: "Get random Chuck Norris Jokes.Example /chucknorris, gives random chuck norris joke of the day",
 	})
 }
 
@@ -56,11 +56,11 @@ func (p *ChuckNorrisPlugin) PluginId() string {
 
 func (p *ChuckNorrisPlugin) Run(message telebot.Message) {
 	bot := pluginframework.Bot
-	if strings.HasPrefix(message.Text, "/chucknorris") {
+	if strings.HasPrefix(message.Text, p.Command()) {
 		rest := gorest.New()
 		request, _ := rest.Base(baseapi).Path("random").Get().Request()
 		response, _ := rest.Send(request)
-		if response.StatusCode == 200 {
+		if response != nil; response.StatusCode == 200 {
 			var resp Chucknorriscall
 			gorest.Response(response, &resp, nil)
 			chuckResponse := resp.Value
