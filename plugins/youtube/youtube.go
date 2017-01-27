@@ -72,9 +72,6 @@ func init() {
 }
 
 func (p *YoutubePlugin) OnStart() {
-	/*if ApiKey == nil || ApiKey == "" {
-		panic("Youtube API Token is not defined.")
-	}*/
 	fmt.Printf("Starting Youtube %s \n", p.name)
 }
 
@@ -88,7 +85,6 @@ func (p *YoutubePlugin) GetId() string {
 
 func (p *YoutubePlugin) Run(message telebot.Message) {
 	ApiKey := os.Getenv("YOUTUBE_KEY")
-	fmt.Println(ApiKey)
 	fmt.Printf("youtube video to be searched %s \n", message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/youtube") {
@@ -107,23 +103,12 @@ func (p *YoutubePlugin) Run(message telebot.Message) {
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(youtubeResponse)
-			fmt.Println(youtubeResponse.Items)
-			fmt.Println(len(youtubeResponse.Items))
 			thumbnailurl := youtubeResponse.Items[0].Snippet.Thumbnails.Default.Url
 			title := youtubeResponse.Items[0].Snippet.Title
 			videoId := youtubeResponse.Items[0].Id.VideoId
 			url := watchurl + videoId
-			fmt.Println(url)
-			fmt.Println(videoId)
-			fmt.Println(title)
-			fmt.Println(thumbnailurl)
-
 			bot.SendMessage(message.Chat, title, nil)
 			pluginframework.SendVideo(url, message, bot)
-			/*			pluginframework.SendPhoto(thumbnailurl, message, nil)
-						pluginframework.SendVideo(thumbnailurl, message, nil)
-			*/
 		} else {
 			bot.SendMessage(message.Chat, "Some problem with Youtube", nil)
 		}
