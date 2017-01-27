@@ -8,14 +8,15 @@ import (
 type BotPlugin interface {
 	OnStart()
 	OnStop()
-	GetId() string
 	Run(telebot.Message)
+	Command() string
+	PluginId() string
+	Description() string
 }
 
 var RegisteredPlugins = map[string]BotPlugin{}
 var Bot *telebot.Bot
 
 func Register(botPlugin BotPlugin) {
-	RegisteredPlugins[botPlugin.GetId()] = botPlugin
-	fmt.Println(RegisteredPlugins)
+	RegisteredPlugins[botPlugin.PluginId()] = botPlugin
 }

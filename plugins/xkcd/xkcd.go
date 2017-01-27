@@ -26,28 +26,41 @@ type Xkcd struct {
 	Day        string `json:day"`
 }
 
-type XkcdPlugin struct{ name string }
+type XkcdPlugin struct {
+	name        string
+	command     string
+	id          string
+	description string
+}
 
 func init() {
-	//Register Plugin
-	fmt.Printf("Starting XkcdPlugin \n")
-	pluginframework.Register(&XkcdPlugin{name: "XKCD"})
+	pluginframework.Register(&XkcdPlugin{
+		name:        "XKCD",
+		command:     "/xkcd",
+		id:          "[xkcd]",
+		description: "Get xkcd comic Image based on Id. Example /xkcd 888 ==> Provide comic Image with Id(888) to user",
+	})
+}
+
+func (p *XkcdPlugin) Command() string {
+	return p.command
+}
+
+func (p *XkcdPlugin) Description() string {
+	return p.description
 }
 
 func (p *XkcdPlugin) OnStart() {
-	fmt.Printf("Starting Xkcd %s \n", p.name)
 }
 
 func (p *XkcdPlugin) OnStop() {
-	fmt.Printf("Stoping Plugin \n")
 }
 
-func (p *XkcdPlugin) GetId() string {
-	return "XcdPlugin"
+func (p *XkcdPlugin) PluginId() string {
+	return p.id
 }
 
 func (p *XkcdPlugin) Run(message telebot.Message) {
-	fmt.Println("Message xkcd" + message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/xkcd") {
 		rest := gorest.New()

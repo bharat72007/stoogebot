@@ -7,23 +7,38 @@ import (
 	"strings"
 )
 
-type EchoPlugin struct{}
+type EchoPlugin struct {
+	name        string
+	command     string
+	id          string
+	description string
+}
 
 func init() {
-	fmt.Printf("Registering Echo Plugin \n")
-	pluginframework.Register(&EchoPlugin{})
+	pluginframework.Register(&EchoPlugin{
+		name:        "Echo Plugin",
+		command:     "/echo",
+		id:          "[echo]",
+		description: "Echo back the text. Example /echo texting to you ==> Display texting to you",
+	})
+}
+
+func (p *EchoPlugin) Command() string {
+	return p.command
+}
+
+func (p *EchoPlugin) Description() string {
+	return p.description
 }
 
 func (p *EchoPlugin) OnStart() {
-	fmt.Printf("Starting Plugin %s \n", p.GetId())
 }
 
 func (p *EchoPlugin) OnStop() {
-	fmt.Printf("Stoping Plugin \n")
 }
 
-func (p *EchoPlugin) GetId() string {
-	return "echoplugin"
+func (p *EchoPlugin) PluginId() string {
+	return p.id
 }
 
 func (p *EchoPlugin) Run(message telebot.Message) {

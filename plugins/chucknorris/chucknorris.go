@@ -20,28 +20,41 @@ type Chucknorriscall struct {
 	Value    string `json:"value"`
 }
 
-type ChuckNorrisPlugin struct{ name string }
+type ChuckNorrisPlugin struct {
+	name        string
+	command     string
+	id          string
+	description string
+}
 
 func init() {
-	//Register Plugin
-	fmt.Printf("Inviting ChuckNorrisPlugin \n")
-	pluginframework.Register(&ChuckNorrisPlugin{name: "One and Only one ChuckNorris"})
+	pluginframework.Register(&ChuckNorrisPlugin{
+		name:        "Chuck Norris Plugin",
+		command:     "/chucknorris",
+		id:          "[chucknorris]",
+		description: "Get random Chuck Norris Jokes. Example /chucknorris ==> gives random chuck norris joke of the day",
+	})
+}
+
+func (p *ChuckNorrisPlugin) Command() string {
+	return p.command
+}
+
+func (p *ChuckNorrisPlugin) Description() string {
+	return p.description
 }
 
 func (p *ChuckNorrisPlugin) OnStart() {
-	fmt.Printf("Starting ChuckNorris %s \n", p.name)
 }
 
 func (p *ChuckNorrisPlugin) OnStop() {
-	fmt.Printf("Stoping Plugin \n")
 }
 
-func (p *ChuckNorrisPlugin) GetId() string {
-	return "Plugins Creator ChuckNorris"
+func (p *ChuckNorrisPlugin) PluginId() string {
+	return p.id
 }
 
 func (p *ChuckNorrisPlugin) Run(message telebot.Message) {
-	fmt.Printf("Chuck Knows what message you are going to send %s \n", message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/chucknorris") {
 		rest := gorest.New()

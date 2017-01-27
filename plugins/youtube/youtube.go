@@ -62,30 +62,42 @@ type thumb struct {
 	Height string `json:"height"`
 }
 
-type YoutubePlugin struct{ name string }
+type YoutubePlugin struct {
+	name        string
+	command     string
+	id          string
+	description string
+}
 
 func init() {
+	pluginframework.Register(&YoutubePlugin{
+		name:        "Youtube Plugin",
+		command:     "/youtube",
+		id:          "[youtube]",
+		description: "Search Youtube Video using Bot. Example /youtube Football ==> Gives you Football Video",
+	})
+}
 
-	//Register Plugin
-	fmt.Printf("Initing Youtube Plugin \n")
-	pluginframework.Register(&YoutubePlugin{name: "Youtube Plugin"})
+func (p *YoutubePlugin) Command() string {
+	return p.command
+}
+
+func (p *YoutubePlugin) Description() string {
+	return p.description
 }
 
 func (p *YoutubePlugin) OnStart() {
-	fmt.Printf("Starting Youtube %s \n", p.name)
 }
 
 func (p *YoutubePlugin) OnStop() {
-	fmt.Printf("Stoping Plugin \n")
 }
 
-func (p *YoutubePlugin) GetId() string {
-	return "YoutubePlugin"
+func (p *YoutubePlugin) PluginId() string {
+	return p.id
 }
 
 func (p *YoutubePlugin) Run(message telebot.Message) {
 	ApiKey := os.Getenv("YOUTUBE_KEY")
-	fmt.Printf("youtube video to be searched %s \n", message.Text)
 	bot := pluginframework.Bot
 	if strings.HasPrefix(message.Text, "/youtube") {
 		searchKeyword := strings.Replace(strings.Replace(message.Text, "/youtube", "", -1), " ", "", -1)
@@ -103,7 +115,6 @@ func (p *YoutubePlugin) Run(message telebot.Message) {
 			if err != nil {
 				fmt.Println(err)
 			}
-			thumbnailurl := youtubeResponse.Items[0].Snippet.Thumbnails.Default.Url
 			title := youtubeResponse.Items[0].Snippet.Title
 			videoId := youtubeResponse.Items[0].Id.VideoId
 			url := watchurl + videoId
